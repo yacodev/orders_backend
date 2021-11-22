@@ -33,3 +33,26 @@ function handleConnection(){
 }
 
 handleConnection();
+
+function list(table){
+  return new Promise((resolve, reject)=>{
+    connection.query(`SELECT * FROM ${table}`,(err,data)=>{
+      if(err) return reject(err);
+      resolve(data)
+    })
+  })
+}
+
+function create(table,data){
+  return new Promise((resolve,reject)=>{
+    connection.query(`INSERT INTO ${table} SET ?`,data,(err,result)=>{
+      if(err) return reject(err);
+      resolve(result);
+    })
+  })
+}
+
+module.exports = {
+  list,
+  create,
+}
