@@ -74,8 +74,17 @@ function query(table,q,join){
   })
 }
 
+function lastId(){
+  return new Promise((resolve,reject)=>{
+      connection.query(`SELECT LAST_INSERT_ID();`,(err,result)=>{
+          if(err) return reject(err);
+          resolve(result);
+      })
+  })
+}
 module.exports = {
   list,
   create,
   query,
+  lastId,
 }

@@ -1,4 +1,6 @@
+const auth = require('../auth');
 const TABLE = 'user';
+
 
 module.exports = function(injectedStore){
   let store = injectedStore;
@@ -8,7 +10,6 @@ module.exports = function(injectedStore){
   }
 
   async function create(body){
-    console.log("[BODY]",body)
 
     const user = {
       email: body.email,
@@ -16,7 +17,20 @@ module.exports = function(injectedStore){
       last_name:body.last_name,
     }
 
-    return store.create(TABLE, user)
+    await store.create(TABLE, user);
+    let [{'LAST_INSERT_ID()': userId}] = await store.lastId();
+    console.log('[userId]',userId);
+    if(body.email || body.password){
+      await auth.create({
+        id:userId,
+        email: user.email,
+        password: body.password,
+      })
+    }
+
+    return {
+      token:"asdadsasdasdasdasd",
+    }
   }
 
   return{
