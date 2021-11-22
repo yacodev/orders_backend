@@ -1,10 +1,29 @@
 const express = require('express');
 const response = require('../../../network/response');
+const controller = require('./index');
 
 const router = express.Router();
 
-router.get('/', function(req,res){
-  response.success(req,res, 'Todo correcto', 200);
-})
+router.get('/', list);
+router.post('/',post);
 
+function list (req,res){
+  controller.list()
+    .then((list)=>{
+      response.success(req,res, list, 200);
+    })
+    .catch((err)=>{
+      response.error(req,res,err.message,500)
+    })
+}
+
+function post (req,res){
+  controller.create(req.body)
+    .then((token)=>{
+      response.success(req,res,token,201)
+    })
+    .catch((err)=>{
+      response.error(req,res,err.message,500)
+    })
+}
 module.exports = router;
