@@ -19,11 +19,24 @@ module.exports = function(injectedStore){
     return store.create(TABLA,authData);
   }
 
+  async function login(email,password){
+    const data = await store.query(TABLA,{email: email});
+    return bcrypt.compare(password,data.password)
+      .then(isEqual=>{
+        if(isEqual===true){
+          return auth.sign(data)
+        }else {
+          throw new Error ('Information invalide')
+        }
+      })
+  }
+
   async function getToken(data){
     return auth.sign(data)
   }
   return {
     create,
     getToken,
+    login,
   }
 }
