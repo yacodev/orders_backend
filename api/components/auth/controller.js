@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const TABLA = 'auth';
 
 module.exports = function(injectedStore){
@@ -11,7 +13,7 @@ module.exports = function(injectedStore){
       authData.email = data.email;
     }
     if(data.password){
-      authData.password = data.password;
+      authData.password = await bcrypt.hash(data.password,5)
     }
     return store.create(TABLA,authData);
   }
