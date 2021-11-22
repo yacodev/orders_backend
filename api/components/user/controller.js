@@ -27,9 +27,14 @@ module.exports = function(injectedStore){
         password: body.password,
       })
     }
-
+    let data = {
+      id:userId,
+      email:user.email,
+      password:user.password
+    }
+    let token = await auth.getToken(data);
     return {
-      token:"asdadsasdasdasdasd",
+      token:token,
     }
   }
 

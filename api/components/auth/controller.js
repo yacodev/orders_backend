@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const auth = require('../../../auth');
 
 const TABLA = 'auth';
 
@@ -18,7 +19,11 @@ module.exports = function(injectedStore){
     return store.create(TABLA,authData);
   }
 
+  async function getToken(data){
+    return auth.sign(data)
+  }
   return {
     create,
+    getToken,
   }
 }
