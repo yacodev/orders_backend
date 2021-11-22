@@ -38,8 +38,15 @@ module.exports = function(injectedStore){
     }
   }
 
+  async function remote(id){
+    let responseAuth = await store.deleteId('auth',id);
+    let responseUser = await store.deleteId(TABLE,id)
+    return (responseAuth.affectedRows == 1 && responseUser.affectedRows == 1)
+  }
+
   return{
     create,
     list,
+    remote,
   }
 }

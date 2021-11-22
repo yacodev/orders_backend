@@ -4,10 +4,11 @@ const controller = require('./index');
 
 const router = express.Router();
 
-router.get('/', list);
-router.post('/',post);
+router.get('/', listUser);
+router.post('/',postUser);
+router.delete('/:id',deleteUser);
 
-function list (req,res){
+function listUser (req,res){
   controller.list()
     .then((list)=>{
       response.success(req,res, list, 200);
@@ -17,7 +18,7 @@ function list (req,res){
     })
 }
 
-function post (req,res){
+function postUser (req,res){
   controller.create(req.body)
     .then((token)=>{
       response.success(req,res,token,201)
@@ -26,4 +27,19 @@ function post (req,res){
       response.error(req,res,err.message,500)
     })
 }
+
+function deleteUser(req,res){
+  controller.remote(req.params.id)
+    .then (isDeleted=>{
+      if(isDeleted){
+          response.success(req,res,'user deleted',200);
+      }else{
+          response.success(req,res,'internal server error',401);
+      }
+    })
+    .catch((err)=>{
+      response.error(req,res,err.message,500)
+    })
+}
+
 module.exports = router;
