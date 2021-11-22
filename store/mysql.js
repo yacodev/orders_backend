@@ -52,6 +52,15 @@ function create(table,data){
   })
 }
 
+function get(table,id){
+  return new Promise ((resolve,reject)=>{
+    connection.query(`SELECT * FROM ${table} WHERE id='${id}'`,(err,data)=>{
+      if(err) return reject(err);
+      resolve(data);
+    })
+  })
+}
+
 function query(table,q,join){
   let joinQuery = '';
   if(join){
@@ -92,10 +101,25 @@ function deleteId(table,id){
 })
 }
 
+function searchId(table,id){
+  return new Promise((resolve,reject)=>{
+      connection.query(`SELECT * FROM ${table} WHERE id=${id}`,(err,result)=>{
+          if(err) return reject(err);
+          if(result.length == 0 ){
+              resolve(null);
+          }else{
+              resolve(result[0].id);
+          }
+      })
+  })
+}
+
 module.exports = {
   list,
+  get,
   create,
   query,
   lastId,
+  searchId,
   deleteId
 }

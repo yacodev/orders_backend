@@ -5,6 +5,10 @@ const TABLE = 'user';
 module.exports = function(injectedStore){
   let store = injectedStore;
   
+  if(!store){
+    throw new Error('problem connected with store');
+  }
+
   async function list(){
     return store.list(TABLE)
   }
@@ -39,9 +43,14 @@ module.exports = function(injectedStore){
   }
 
   async function remote(id){
-    let responseAuth = await store.deleteId('auth',id);
-    let responseUser = await store.deleteId(TABLE,id)
-    return (responseAuth.affectedRows == 1 && responseUser.affectedRows == 1)
+    const foundId = await store.searchId(TABLE,id);
+    if(foundId === parseInt(id)){
+      const responseAuth = await store.deleteId('auth',id);
+      const responseUser = await store.deleteId(TABLE,id);
+      return (responseAuth.affectedRows == 1 && responseUser.affectedRows == 1);
+    }else{
+      return false;
+    }
   }
 
   return{
