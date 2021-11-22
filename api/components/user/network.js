@@ -5,7 +5,7 @@ const controller = require('./index');
 const router = express.Router();
 
 router.get('/', listUser);
-router.post('/',postUser);
+router.post('/',createUser);
 router.delete('/:id',deleteUser);
 
 function listUser (req,res){
@@ -18,7 +18,7 @@ function listUser (req,res){
     })
 }
 
-function postUser (req,res){
+function createUser (req,res){
   controller.create(req.body)
     .then((token)=>{
       response.success(req,res,token,201)
@@ -34,7 +34,7 @@ function deleteUser(req,res){
       if(isDeleted){
           response.success(req,res,'user deleted',200);
       }else{
-          response.success(req,res,'internal server error',401);
+          response.success(req,res,'internal server error',500);
       }
     })
     .catch((err)=>{

@@ -6,6 +6,10 @@ const TABLA = 'auth';
 module.exports = function(injectedStore){
   let store =injectedStore
 
+  if(!store){
+    throw new Error('problem connected with store');
+  }
+
   async function create(data){
     const authData = {
       id:data.id,
@@ -36,7 +40,7 @@ module.exports = function(injectedStore){
   }
   return {
     create,
-    getToken,
     login,
+    getToken,
   }
 }
