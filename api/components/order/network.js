@@ -1,11 +1,13 @@
 const express = require('express');
-const controller = require('./index');
+
+const secure = require('./secure');
 const response = require('../../../network/response');
+const controller = require('./index');
 const router = express.Router();
 
-router.post('/',createOrder);
-router.get('/',listOrders);
-router.delete('/:id',deleteOrder);
+router.post('/',secure('create'),createOrder);
+router.get('/',secure('logged'),listOrders);
+router.delete('/:id',secure('logged'),deleteOrder);
 
 function createOrder(req,res){
   controller.create(req.body)
