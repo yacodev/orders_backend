@@ -7,16 +7,18 @@ module.exports = function(injectedStore){
     throw new Error('problem connected with store');
   }
 
-  function list(){
+  async function list(req){
+    verifySession(req);
     return store.list(TABLE);
   }
 
 
-  async function create(body){
+  async function create(req){
+    verifySession(req);
     const order = {
-      date:body.date,
-      product_id:body.product_id,
-      user_id:body.user_id,
+      date:req.body.date,
+      product_id:req.body.product_id,
+      user_id:req.body.user_id,
     }
 
     const responseProduct = await store.create(TABLE,order);
@@ -24,13 +26,23 @@ module.exports = function(injectedStore){
     return (responseProduct.affectedRows === 1);
   }
 
-  async function remove(id){
+  async function remove(req){
+    verifySession(req);
+    const id = req.params.id;
     const foundId = await store.searchId(TABLE,id);
     if (foundId === parseInt(id)){
       const responseProduct = await store.deleteId(TABLE,id);
       return (responseProduct.affectedRows === 1);
     }else{
       return false;
+    }
+  }
+
+  function verifySession(req){
+    if(req.session.email){
+      return true;
+    }else{
+      throw new Error('You are not logged in');
     }
   }
 

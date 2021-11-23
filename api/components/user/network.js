@@ -30,7 +30,7 @@ function createUser (req,res){
 
 function deleteUser(req,res){
   controller.remote(req.params.id)
-    .then (isDeleted=>{
+    .then ((isDeleted)=>{
       if(isDeleted){
           response.success(req,res,'user deleted',200);
       }else{
