@@ -14,7 +14,8 @@ module.exports = function(injectedStore){
     return store.list(TABLE)
   }
 
-  async function create(body){
+  async function create(req){
+    const body = req.body;
 
     const user = {
       email: body.email,
@@ -38,6 +39,7 @@ module.exports = function(injectedStore){
       password:user.password
     }
     let token = await auth.getToken(data);
+    req.session.email = user.email;
     return {
       token:token,
     }

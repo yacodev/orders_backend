@@ -17,7 +17,7 @@ function listUser (req,res,next){
 }
 
 function createUser (req,res,next){
-  controller.create(req.body)
+  controller.create(req)
     .then((token)=>{
       response.success(req,res,token,201)
     })

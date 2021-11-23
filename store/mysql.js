@@ -83,6 +83,20 @@ function query(table,q){
   })
 }
 
+function getProductId(table,id){
+
+  return new Promise((resolve,reject)=>{
+    connection.query(`SELECT * FROM ${table} WHERE user_id=${id}`,(err,result)=>{
+        if(err) return reject(err);
+        if(result.length == 0 ){
+            resolve(null);
+        }else{
+            resolve(result);
+        }
+    })
+  })
+}
+
 function lastId(){
   return new Promise((resolve,reject)=>{
       connection.query(`SELECT LAST_INSERT_ID();`,(err,result)=>{
@@ -121,5 +135,6 @@ module.exports = {
   query,
   lastId,
   searchId,
-  deleteId
+  deleteId,
+  getProductId,
 }
