@@ -9,7 +9,7 @@ router.post('/',secure('create'),createOrder);
 router.get('/',secure('logged'),listOrders);
 router.delete('/:id',secure('logged'),deleteOrder);
 
-function createOrder(req,res){
+function createOrder(req,res,next){
   controller.create(req)
       .then ((isCreated)=>{
           if(isCreated){
@@ -18,22 +18,18 @@ function createOrder(req,res){
               response.success(req,res,'server error',401);
           }
       })
-      .catch((err)=>{
-        response.error(req,res,err.message,500)
-      })
+      .catch(next);
 }
 
-function listOrders(req,res){
+function listOrders(req,res,next){
   controller.list(req)
     .then((list)=>{
       response.success(req,res, list, 200);
     })
-    .catch((err)=>{
-      response.error(req,res,err.message,500)
-    })
+    .catch(next);
 }
 
-function deleteOrder(req,res){
+function deleteOrder(req,res,next){
   controller.remove(req)
       .then ((isDeleted)=>{
           if(isDeleted){
@@ -42,9 +38,7 @@ function deleteOrder(req,res){
               response.success(req,res,'internal server error',500);
           }
       })
-      .catch((err)=>{
-        response.error(req,res,err.message,500)
-      })
+      .catch(next);
 }
 
 module.exports = router;

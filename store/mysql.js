@@ -61,24 +61,24 @@ function get(table,id){
   })
 }
 
-function query(table,q,join){
-  let joinQuery = '';
-  if(join){
-    const key=Object.keys(join)[0];//-->user
-    const val = join[key];//-->user_to
-    joinQuery = `JOIN ${key} ON ${table}.${val}=${key}.id`;
-  }
+function query(table,q){
+
   return new Promise((resolve,reject)=>{
-    connection.query(`SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`,q,(err, res)=>{
+    connection.query(`SELECT * FROM ${table} WHERE ${table}.?`,q,(err, res)=>{
       if(err){
       return reject(err);
-      } 
-      let output ={
-        id:res[0].id,
-        username:res[0].username,
-        password:res[0].password,
       }
-      resolve(output || null);
+      if(res.length>0){
+        let output ={
+          id:res[0].id,
+          username:res[0].username,
+          password:res[0].password,
+        }
+        resolve(output || null);
+      } else{
+        const error ={message: 'data incorrect', statuscode: 400};
+        return reject(error);
+      }
     })
   })
 }

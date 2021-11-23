@@ -9,8 +9,8 @@ router.get('/:id',showProduct);
 router.delete('/:id',deleteProduct);
 
 
-function createProduct(req,res){
-  controller.create(req.body)
+function createProduct(req,res,next){
+  controller.create(req)
       .then ((isCreated)=>{
           if(isCreated){
               response.success(req,res,'product create',201)
@@ -18,33 +18,27 @@ function createProduct(req,res){
               response.success(req,res,'server error',401);
           }
       })
-      .catch((err)=>{
-        response.error(req,res,err.message,500)
-      })
+      .catch(next);
 }
 
-function listProducts(req,res){
-  controller.list()
+function listProducts(req,res,next){
+  controller.list(req)
     .then((list)=>{
       response.success(req,res, list, 200);
     })
-    .catch((err)=>{
-      response.error(req,res,err.message,500)
-    })
+    .catch(next);
 }
 
-function showProduct(req,res){
-  controller.show(req.params.id)
+function showProduct(req,res,next){
+  controller.show(req)
     .then((product)=>{
       response.success(req,res, product, 200);
     })
-    .catch((err)=>{
-      response.error(req,res,err.message,500)
-    })
+    .catch(next);
 }
 
-function deleteProduct(req,res){
-  controller.remove(req.params.id)
+function deleteProduct(req,res,next){
+  controller.remove(req)
       .then ((isDeleted)=>{
           if(isDeleted){
               response.success(req,res,'product delete',200)
@@ -52,9 +46,7 @@ function deleteProduct(req,res){
               response.success(req,res,'internal server error',500);
           }
       })
-      .catch((err)=>{
-        response.error(req,res,err.message,500)
-      })
+      .catch(next);
 }
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const TABLE = 'orders';
-
+const error = require('../../../utils/error');
 
 module.exports = function(injectedStore){
   let store = injectedStore;
@@ -42,7 +42,7 @@ module.exports = function(injectedStore){
     if(req.session.email){
       return true;
     }else{
-      throw new Error('You are not logged in');
+      throw error('you are not logged in',400);
     }
   }
 

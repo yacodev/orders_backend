@@ -1,6 +1,6 @@
 const auth = require('../auth');
+const error = require('../../../utils/error');
 const TABLE = 'user';
-
 
 module.exports = function(injectedStore){
   let store = injectedStore;
@@ -9,7 +9,8 @@ module.exports = function(injectedStore){
     throw new Error('problem connected with store');
   }
 
-  async function list(){
+  async function list(req){
+    verifyUserAdmin(req);
     return store.list(TABLE)
   }
 
@@ -42,7 +43,9 @@ module.exports = function(injectedStore){
     }
   }
 
-  async function remote(id){
+  async function remove(req){
+    verifyUserAdmin(req);
+    const id = req.params.id;
     const foundId = await store.searchId(TABLE,id);
     if(foundId === parseInt(id)){
       const responseAuth = await store.deleteId('auth',id);
@@ -53,9 +56,17 @@ module.exports = function(injectedStore){
     }
   }
 
+  function verifyUserAdmin(req){
+    if(req.session.email == "cyaco33@gmail.com"){
+      return true;
+    }else{
+      throw error('you are not authorizate',401);
+    }
+  }
+
   return{
     create,
     list,
-    remote,
+    remove,
   }
 }

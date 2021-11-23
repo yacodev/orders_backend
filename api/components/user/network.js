@@ -8,28 +8,24 @@ router.get('/', listUser);
 router.post('/',createUser);
 router.delete('/:id',deleteUser);
 
-function listUser (req,res){
-  controller.list()
+function listUser (req,res,next){
+  controller.list(req)
     .then((list)=>{
       response.success(req,res, list, 200);
     })
-    .catch((err)=>{
-      response.error(req,res,err.message,500)
-    })
+    .catch(next);
 }
 
-function createUser (req,res){
+function createUser (req,res,next){
   controller.create(req.body)
     .then((token)=>{
       response.success(req,res,token,201)
     })
-    .catch((err)=>{
-      response.error(req,res,err.message,500)
-    })
+    .catch(next);
 }
 
-function deleteUser(req,res){
-  controller.remote(req.params.id)
+function deleteUser(req,res,next){
+  controller.remove(req)
     .then ((isDeleted)=>{
       if(isDeleted){
           response.success(req,res,'user deleted',200);
@@ -37,9 +33,7 @@ function deleteUser(req,res){
           response.success(req,res,'internal server error',500);
       }
     })
-    .catch((err)=>{
-      response.error(req,res,err.message,500)
-    })
+    .catch(next);
 }
 
 module.exports = router;
