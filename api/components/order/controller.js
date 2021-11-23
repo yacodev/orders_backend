@@ -9,7 +9,22 @@ module.exports = function(injectedStore){
 
   async function list(req){
     verifySession(req);
-    return store.list(TABLE);
+    const userId = req.body.id;
+    const ownOrders = await store.getProductId(TABLE,userId);
+    let productsIdOrdered = [];
+    let dataAllOrders= [];
+    if(ownOrders){
+      ownOrders.forEach(async (order)=>{
+        const productId = order.product_id;
+        productsIdOrdered.push(productId);
+      })
+      for(let i = 0; i<productsIdOrdered.length; i++){
+        const result= await store.get('products',productsIdOrdered[i])
+        console.log(result);
+        dataAllOrders= [...dataAllOrders,...result];
+      }
+    }
+    return dataAllOrders;
   }
 
 
