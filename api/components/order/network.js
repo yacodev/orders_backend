@@ -10,7 +10,7 @@ router.get('/',secure('logged'),listOrders);
 router.delete('/:id',secure('logged'),deleteOrder);
 
 function createOrder(req,res){
-  controller.create(req.body)
+  controller.create(req)
       .then ((isCreated)=>{
           if(isCreated){
               response.success(req,res,'order create',201)
@@ -24,7 +24,7 @@ function createOrder(req,res){
 }
 
 function listOrders(req,res){
-  controller.list()
+  controller.list(req)
     .then((list)=>{
       response.success(req,res, list, 200);
     })
@@ -34,7 +34,7 @@ function listOrders(req,res){
 }
 
 function deleteOrder(req,res){
-  controller.remove(req.params.id)
+  controller.remove(req)
       .then ((isDeleted)=>{
           if(isDeleted){
               response.success(req,res,'order delete',200)

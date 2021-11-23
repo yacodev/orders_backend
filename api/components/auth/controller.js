@@ -35,6 +35,14 @@ module.exports = function(injectedStore){
       })
   }
 
+  async function logout(req){
+    if (req.session.email){
+      return true;
+    }else{
+      throw new Error ('you are not logged in ');
+    }
+  }
+
   async function getToken(data){
     return auth.sign(data)
   }
@@ -42,5 +50,6 @@ module.exports = function(injectedStore){
     create,
     login,
     getToken,
+    logout,
   }
 }
