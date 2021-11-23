@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
+const error =require('../utils/error');
 
 const secret = config.jwt.secret;
 
@@ -15,26 +16,23 @@ const check = {
   own: function(req,owner){
     const decoded = decodeHeader(req);
     if(decoded.id !== owner){
-      //throw error('No puedes editar',401);
-      throw new Error('No puedes editar');
+      throw error('You are not authorized',401);
     }
   },
   logged: function(req){
     const decode = decodeHeader(req);
     if(!decode.id){
-      throw new Error('No puedes editar');
+      throw error('You are not authorized',401);
     }
   }
 }
 
 function getToken(auth){
   if (!auth){
-    //throw error('No viene token',401);
-    throw new Error('No viene token');
+    throw error('You are not authorized',401);
   }
   if(auth.indexOf('Bearer ')===-1){
-    //throw error('Formato invalido',401);
-    throw new Error('Formato invalido');
+    throw error('Format invalided',400);
   }
   let token = auth.replace('Bearer ','');
   return token

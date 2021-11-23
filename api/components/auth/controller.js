@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const auth = require('../../../auth');
+const error = require('../../../utils/error');
 
 const TABLA = 'auth';
 
@@ -30,7 +31,7 @@ module.exports = function(injectedStore){
         if(isEqual===true){
           return auth.sign(data)
         }else {
-          throw new Error ('Information invalide')
+          throw error('Information invalided',400);
         }
       })
   }
@@ -39,7 +40,7 @@ module.exports = function(injectedStore){
     if (req.session.email){
       return true;
     }else{
-      throw new Error ('you are not logged in ');
+      throw error('you are not logged in',400);
     }
   }
 
