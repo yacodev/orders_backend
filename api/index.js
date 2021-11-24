@@ -11,14 +11,15 @@ const error = require('../network/error');
 
 const app = express();
 
+app.use(cors());
+app.options('*', cors());
+
 app.use(express.json());
 app.use(session({
   secret: config.session_data.secret,
   saveUninitialized: true,
   resave: true,
 }));
-
-app.options('*', cors());
 
 app.use('/api/user',user);
 app.use('/api/session',auth);
