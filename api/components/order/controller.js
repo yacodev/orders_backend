@@ -20,7 +20,6 @@ module.exports = function(injectedStore){
       })
       for(let i = 0; i<productsIdOrdered.length; i++){
         const result= await store.get('products',productsIdOrdered[i])
-        console.log(result);
         dataAllOrders= [...dataAllOrders,...result];
       }
     }

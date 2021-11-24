@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors')
 
 const config =require('../config.js');
 const user = require('./components/user/network');
@@ -16,6 +17,8 @@ app.use(session({
   saveUninitialized: true,
   resave: true,
 }));
+
+app.options('*', cors());
 
 app.use('/api/user',user);
 app.use('/api/session',auth);
