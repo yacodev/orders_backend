@@ -1,10 +1,12 @@
 const express = require('express');
+
+const secure = require('./secure');
 const controller = require('./index');
 const response = require('../../../network/response');
 const router = express.Router();
 
 router.post('/',createProduct);
-router.get('/',listProducts);
+router.get('/',secure('logged'),listProducts);
 router.get('/:id',showProduct);
 router.delete('/:id',deleteProduct);
 

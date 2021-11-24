@@ -8,7 +8,6 @@ module.exports = function(injectedStore){
   }
 
   function list(req){
-    verifySession(req);
     return store.list(TABLE);
   }
 
