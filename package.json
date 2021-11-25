@@ -1,18 +1,21 @@
 {
-  "name": "backend-pedidos",
+  "name": "backend-orders",
   "version": "1.0.0",
-  "description": "backend for project pedidos",
+  "description": "backend for project orders",
   "main": "index.js",
   "scripts": {
+    "start": "node api/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "carlos yaco",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "swagger-ui-express": "^4.1.6"
   }
 }

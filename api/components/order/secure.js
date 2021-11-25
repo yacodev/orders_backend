@@ -9,9 +9,7 @@ module.exports = function checkAuth(action){
         next();
         break;
       case 'logged':
-          const decode = auth.check.logged(req);
-          console.log("DECODE MIDE", decode);
-          req.body.id = decode.id;
+          auth.check.logged(req);
           next();
           break;
       default:

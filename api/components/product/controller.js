@@ -7,13 +7,12 @@ module.exports = function(injectedStore){
     throw new Error('problem connected with store');
   }
 
-  function list(req){
-    verifySession(req);
+  function list(){
     return store.list(TABLE);
   }
 
   function show(req){
-    verifySession(req);
+    verifyUserAdmin(req);
     const id = req.params.id
     return store.get(TABLE,id);
   }
@@ -49,14 +48,6 @@ module.exports = function(injectedStore){
       return true;
     }else{
       throw error('you are not authorizate',401);
-    }
-  }
-
-  function verifySession(req){
-    if(req.session.email){
-      return true;
-    }else{
-      throw error('you are not logged in',400);
     }
   }
 
