@@ -41,6 +41,7 @@ module.exports = function(injectedStore){
     req.session.email = user.email;
     return {
       token:token,
+      id:userId,
     }
   }
 
