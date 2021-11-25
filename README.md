@@ -49,8 +49,9 @@ This repository has the following  organization:
 * npm
 
 
-## Inicio de la aplicación
+## start aplication
 
 * Clone the repository.
 * npm install
 * nodemon api/index.js
+* Need setup ENVIROMENT VARIABLE : PORT, JWT_SECRET, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD and  MYSQL_DATABASE
