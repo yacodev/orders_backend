@@ -25,7 +25,6 @@ module.exports = function(injectedStore){
 
     await store.create(TABLE, user);
     let [{'LAST_INSERT_ID()': userId}] = await store.lastId();
-    console.log('[userId]',userId);
     if(body.email || body.password){
       await auth.create({
         id:userId,
@@ -42,6 +41,7 @@ module.exports = function(injectedStore){
     req.session.email = user.email;
     return {
       token:token,
+      id:userId,
     }
   }
 

@@ -1,31 +1,31 @@
 const express = require('express');
 
-
+const secure = require('./secure');
 const response = require('../../../network/response');
 const controller = require('./index');
 
 const router = express.Router();
 
 router.post('/', loginUser);
-router.delete('/', logoutUser);
+router.delete('/',secure('logged'), logoutUser);
 
 function loginUser(req,res,next){
   controller.login(req.body.email, req.body.password)
-    .then(token=>{
+    .then((data)=>{
       req.session.email = req.body.email;
-      response.success(req,res,token,200);
+      response.success(req,res,data,200);
     })
     .catch(next);
 }
 
 function logoutUser(req,res,next){
-  controller.logout(req)
+  controller.logout()
     .then((isLogout)=>{
       if(isLogout){
         req.session.destroy();
         response.success(req,res,'',200);
       }else{
-        response.success(req,res,'400',401);
+        response.success(req,res,'Internal error',500);
       }
     })
     .catch(next);

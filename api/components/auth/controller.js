@@ -29,19 +29,17 @@ module.exports = function(injectedStore){
     return bcrypt.compare(password,data.password)
       .then(isEqual=>{
         if(isEqual===true){
-          return auth.sign(data)
+          const token = auth.sign(data);
+          const id = data.id
+          return {token, id}
         }else {
-          throw error('Information invalided',400);
+          throw error('data incorrect',400);
         }
       })
   }
 
-  async function logout(req){
-    if (req.session.email){
+  async function logout(){
       return true;
-    }else{
-      throw error('you are not logged in',400);
-    }
   }
 
   async function getToken(data){
