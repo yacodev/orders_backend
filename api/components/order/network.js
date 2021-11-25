@@ -15,7 +15,7 @@ function createOrder(req,res,next){
           if(isCreated){
               response.success(req,res,'order create',201)
           }else{
-              response.success(req,res,'server error',401);
+              response.success(req,res,'server error',500);
           }
       })
       .catch(next);

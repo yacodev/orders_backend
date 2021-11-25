@@ -8,7 +8,7 @@ module.exports = function(injectedStore){
   }
 
   async function list(req){
-    verifySession(req);
+    verifyUserAdmin(req);
     const userId = req.body.id;
     const ownOrders = await store.getProductId(TABLE,userId);
     let productsIdOrdered = [];
@@ -28,20 +28,23 @@ module.exports = function(injectedStore){
 
 
   async function create(req){
-    verifySession(req);
-    const order = {
-      date:req.body.date,
-      product_id:req.body.product_id,
-      user_id:req.body.user_id,
+    const listProductsId = req.body.product_ids;
+    let verifyOpertaions = 0; 
+    for (let i=0; i< listProductsId.length; i++){
+      const order = {
+        date:req.body.date,
+        product_id:listProductsId[i],
+        user_id:req.body.user_id,
+      };
+      const responseProduct = await store.create(TABLE,order);
+      if (responseProduct.affectedRows === 1) verifyOpertaions+=1;
     }
-
-    const responseProduct = await store.create(TABLE,order);
     
-    return (responseProduct.affectedRows === 1);
+    return (verifyOpertaions === listProductsId.length);
   }
 
   async function remove(req){
-    verifySession(req);
+    verifyUserAdmin(req);
     const id = req.params.id;
     const foundId = await store.searchId(TABLE,id);
     if (foundId === parseInt(id)){
@@ -52,11 +55,11 @@ module.exports = function(injectedStore){
     }
   }
 
-  function verifySession(req){
-    if(req.session.email){
+  function verifyUserAdmin(req){
+    if(req.session.email == "cyaco33@gmail.com"){
       return true;
     }else{
-      throw error('you are not logged in',400);
+      throw error('you are not authorizate',401);
     }
   }
 

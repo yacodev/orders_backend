@@ -1,0 +1,303 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a API for orders aplication, this API was build to a challeng.",
+    "version": "1.0.0",
+    "title": "Orders",
+    "contact": {
+      "email": "cyaco33@gmail.com"
+    }
+  },
+  "host": "orders-carlos.herokuapp.com",
+  "basePath": "/v2",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Everything about user"
+    },
+    {
+      "name": "session",
+      "description": "Operations about session"
+    },
+    {
+      "name": "order",
+      "description": "Operations about order"
+    },
+    {
+      "name": "product",
+      "description": "Operations about product"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/api/session": {
+      "post": {
+        "tags": [
+          "session"
+        ],
+        "summary": "Create new session",
+        "description": "This can only be done by the logged in user",
+        "operationId": "create Session",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "To loggin into app",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API send into body: token and  id"
+          },
+          "400": {
+            "description": "data incorrect"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "session"
+        ],
+        "summary": "close session",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "description": "close session",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session close"
+          }
+        }
+      }
+    },
+    "/api/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "description": "This can only be done by create a new user.",
+        "operationId": "createUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API send into body: token and  id"
+          }
+        }
+      }
+    },
+    "/api/orders": {
+      "post": {
+        "tags": [
+          "order"
+        ],
+        "summary": "Creates a new order",
+        "description": "Creates a new order",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "List of user object",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Order"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "order created"
+          }
+        }
+      }
+    },
+    "/api/product": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "get a list of products",
+        "description": "get a list of products",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "List of user object",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Product"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "List of products"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Order": {
+      "type": "object",
+      "properties": {
+        "product_ids": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "format": "int11"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int11"
+        },
+        "Date": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "xml": {
+        "name": "Order"
+      }
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int11"
+        }
+      },
+      "xml": {
+        "name": "Product"
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "Session": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Session"
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "boolean"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "body": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

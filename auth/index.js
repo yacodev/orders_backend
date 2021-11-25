@@ -24,7 +24,6 @@ const check = {
     if(!decode.id){
       throw error('You are not authorized',401);
     }
-    console.log("DECODE",decode);
     return decode;
   }
 }

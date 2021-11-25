@@ -24,7 +24,7 @@ function createProduct(req,res,next){
 }
 
 function listProducts(req,res,next){
-  controller.list(req)
+  controller.list()
     .then((list)=>{
       response.success(req,res, list, 200);
     })
